@@ -19,14 +19,10 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_registerFragment_to_confirmCodeFragment"
-            app:destination="@id/confirmCodeFragment" />
+
     </fragment>
 
-    <fragment
-        android:id="@+id/confirmCodeFragment"
-        android:name="com.example.transaction.ui.ConfirmCodeFragment"
-        android:label="Подтверждение кода"/>
+
+
 
 </navigation>

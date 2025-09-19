@@ -23,7 +23,7 @@ data class AccountCreateRequest(
     val userId: String,
     val name: String,
     val currency: String,
-    val type: String
+
+
+val type: String
 )
-
-
