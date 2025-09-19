@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.transaction.ui.LoginFragment"
+        android:label="Вход">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.transaction.ui.RegisterFragment"
+        android:label="Регистрация">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_confirmCodeFragment"
+            app:destination="@id/confirmCodeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/confirmCodeFragment"
+        android:name="com.example.transaction.ui.ConfirmCodeFragment"
+        android:label="Подтверждение кода"/>
+
+</navigation>
