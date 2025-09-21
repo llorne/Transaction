@@ -24,6 +24,7 @@ class VaultsFragment : Fragment(R.layout.fragment_vaults) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentVaultsBinding.bind(view)
+
     }
 
     override fun onDestroyView() {

@@ -9,13 +9,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.transaction.HomeActivity
 import com.example.transaction.R
 import com.example.transaction.databinding.FragmentLoginBinding
 import com.example.transaction.retrofit.*
+import com.example.transaction.ui.theme.VaultsFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,7 +27,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Instant
-import java.util.zip.Inflater
+
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -33,6 +36,22 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
 
     private lateinit var loginApi: LoginApi
+    interface OnFragmentActionListener {
+        fun onChangeAttribute(newValue: String)
+    }
+    private var actionListener: OnFragmentActionListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Ensure the hosting Activity implements the interface
+        actionListener = context as? OnFragmentActionListener
+        if (actionListener == null) {
+            throw ClassCastException("$context must implement OnFragmentActionListener")
+        }
+    }
+    private fun updateParentAttribute() {
+        actionListener?.onChangeAttribute("New Value")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,7 +91,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         //  2) Нажатие кнопки Login(Войти)
         binding.loginButton.setOnClickListener {
             // Для дорогого Султана Тимура - это чтобы не авторизовываться ибо я не умею)
-            startActivity(Intent(requireContext(), HomeActivity::class.java))
+            //startActivity(Intent(requireContext(), HomeActivity::class.java))
+            updateParentAttribute()
+            val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
+            ft.replace(R.id.nav_host_fragment, VaultsFragment(), "No")
+            ft.commit()
+
             viewLifecycleOwner.lifecycleScope.launch {
                 val ctx = requireContext()
                 val username = binding.username.text.toString().trim()
@@ -106,7 +130,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                         withContext(Dispatchers.Main) {
                             Toast.makeText(ctx, "Успешный вход 🎉", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(requireContext(), HomeActivity::class.java))
+                            updateParentAttribute()
+                            val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
+                            ft.replace(R.id.nav_host_fragment, VaultsFragment(), "No")
+                            ft.commit()
                         }
                     } catch (e: retrofit2.HttpException) {
                         withContext(Dispatchers.Main) {
