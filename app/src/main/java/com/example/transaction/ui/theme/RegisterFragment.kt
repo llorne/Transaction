@@ -34,11 +34,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
 
 
-    // Retrofit внутри фрагмента
-
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentRegisterBinding.bind(view)
@@ -60,7 +55,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     // Отправка запроса на регистрацию
-                    val token = registrationApi.auth(
+                    val token = registrationApi.authReg(
                         RegRequest(
                             binding.username.text.toString(),
                             binding.firstName.text.toString(),
