@@ -63,6 +63,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 // accessToken действителен либо был успешно обновлён
                 Toast.makeText(ctx, "Успешный вход (токен валиден)", Toast.LENGTH_SHORT).show()
                 Log.i("AuthCheck", "Token valid — вход выполнен автоматически")
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
                 return@launch
             } else {
                 Log.i("AuthCheck", "Нет валидных токенов — показываем форму логина")
@@ -70,9 +71,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         //  2) Нажатие кнопки Login(Войти)
+
+
+
+        //  2) Нажатие кнопки Login(Войти)
         binding.loginButton.setOnClickListener {
-            // Для дорогого Султана Тимура - это чтобы не авторизовываться ибо я не умею)
-            startActivity(Intent(requireContext(), HomeActivity::class.java))
             viewLifecycleOwner.lifecycleScope.launch {
                 val ctx = requireContext()
                 val username = binding.username.text.toString().trim()
@@ -89,7 +92,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             LoginRequest(username = username, password = password)
                         )
 
-                        // Сохраняем JWT-обёртку (сформируем её из responseToken)
                         val jwtWrapper = JwtWrapper(
                             jwtToken = JwtWrapper.JwtToken(
                                 accessToken = responseToken.accessToken,
@@ -98,7 +100,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         )
                         saveJwt(ctx, jwtWrapper)
 
-                        // Логируем то, что пришло (коротко)
                         Log.i("LoginResponse", "accessToken = ${responseToken.accessToken.accessToken}")
                         Log.i("LoginResponse", "accessExpires = ${responseToken.accessToken.expiresAt}")
                         Log.i("LoginResponse", "refreshToken = ${responseToken.refreshToken.refreshToken}")
@@ -127,7 +128,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         }
 
-        // 3) Переход на регистрацию ---
+
+
+        // 3) Переход на регистрацию
         binding.toRegisterText.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }

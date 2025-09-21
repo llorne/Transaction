@@ -24,7 +24,6 @@
         android:elevation="16sp"
         app:itemIconTint="@color/nav_item_color"
         app:itemRippleColor="@color/white_200"
-        app:itemActiveIndicatorStyle="@color/blue_400"
         app:menu="@menu/bottom_navigation_menu" />
 
 </LinearLayout>
