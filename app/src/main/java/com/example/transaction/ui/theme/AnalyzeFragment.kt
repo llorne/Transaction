@@ -1,4 +1,4 @@
-package com.example.transaction.ui.theme
+package com.example.transaction.ui.theme;
 
 import LoginApi
 import RefreshRequest
@@ -8,22 +8,25 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.transaction.R
-import com.example.transaction.databinding.FragmentHomepageBinding
+import com.example.transaction.databinding.FragmentAnalyzeBinding
+import com.example.transaction.databinding.FragmentTransactionsBinding
 import com.example.transaction.retrofit.JwtWrapper
 import com.example.transaction.retrofit.loadJwt
 import com.example.transaction.retrofit.saveJwt
 import java.time.Instant
 
-class HomePageFragment : Fragment(R.layout.fragment_homepage) {
-    private var _binding: FragmentHomepageBinding? = null
+public class AnalyzeFragment : Fragment(R.layout.fragment_analyze) {
+
+    private var _binding: FragmentAnalyzeBinding? = null
 
     private val binding get() = _binding!!
 
-    private lateinit var loginApi: LoginApi
+    private lateinit var loginApi:
+            LoginApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentHomepageBinding.bind(view)
+        _binding = FragmentAnalyzeBinding.bind(view)
     }
 
     override fun onDestroyView() {
@@ -76,4 +79,5 @@ class HomePageFragment : Fragment(R.layout.fragment_homepage) {
         }
     }
 }
+
 

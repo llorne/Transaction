@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_200"
-    android:gravity="bottom|center_horizontal"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="20sp">
 
@@ -84,4 +84,14 @@
         android:textColor="@color/white_200"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <!-- Кнопка перехода к регистрации -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/toLoginText"
+        android:text="Есть аккаунт? Авторизоваться"
+        android:textColor="@color/blue_400"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
 </LinearLayout>

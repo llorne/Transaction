@@ -4,6 +4,7 @@ import LoginApi
 import LoginRequest
 import RefreshRequest
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.transaction.HomeActivity
 import com.example.transaction.R
 import com.example.transaction.databinding.FragmentLoginBinding
 import com.example.transaction.retrofit.*
@@ -22,6 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Instant
+import java.util.zip.Inflater
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -68,6 +71,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         //  2) Нажатие кнопки Login(Войти)
         binding.loginButton.setOnClickListener {
+            // Для дорогого Султана Тимура - это чтобы не авторизовываться ибо я не умею)
+            startActivity(Intent(requireContext(), HomeActivity::class.java))
             viewLifecycleOwner.lifecycleScope.launch {
                 val ctx = requireContext()
                 val username = binding.username.text.toString().trim()
@@ -101,7 +106,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                         withContext(Dispatchers.Main) {
                             Toast.makeText(ctx, "Успешный вход 🎉", Toast.LENGTH_SHORT).show()
-                            // Пока не делаем навигацию в HomeFragment — Агамогланов Фархад займётся этим
+                            startActivity(Intent(requireContext(), HomeActivity::class.java))
                         }
                     } catch (e: retrofit2.HttpException) {
                         withContext(Dispatchers.Main) {

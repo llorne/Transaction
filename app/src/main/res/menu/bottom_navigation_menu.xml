@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/vaults"
+        android:enabled="true"
+        android:icon="@drawable/bank"
+        android:iconTint="@color/blue_800"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/transactions"
+        android:enabled="true"
+        android:icon="@drawable/transaction"
+        android:iconTint="@color/blue_800"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/goals"
+        android:enabled="true"
+        android:iconTint="@color/blue_800"
+        android:icon="@drawable/goal"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/analyze"
+        android:enabled="true"
+        android:icon="@drawable/analyzer"
+        android:iconTint="@color/blue_800"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/user"
+        android:iconTint="@color/blue_800"
+        tools:ignore="MenuTitle" />
+</menu>

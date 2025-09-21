@@ -65,8 +65,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         )
                     )
 
-
-
                     val jwtWrapper = token.toJwtWrapper()
 
 
@@ -101,6 +99,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     }
                 }
             }
+        }
+        binding.toLoginText.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
     }
