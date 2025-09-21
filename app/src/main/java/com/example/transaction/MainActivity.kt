@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.transaction.databinding.ActivityMainBinding
-import com.example.transaction.retrofit.AccountResponseApi
-import com.example.transaction.retrofit.RegistrationApi
+import com.example.transaction.retrofit.AccountResponseApi 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
