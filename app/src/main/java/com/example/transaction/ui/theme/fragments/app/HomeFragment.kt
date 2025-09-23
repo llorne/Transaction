@@ -1,4 +1,4 @@
-package com.example.transaction.ui.theme
+package com.example.transaction.ui.theme;
 
 import LoginApi
 import RefreshRequest
@@ -8,23 +8,24 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.transaction.R
-import com.example.transaction.databinding.FragmentVaultsBinding
+import com.example.transaction.databinding.FragmentHomeBinding
 import com.example.transaction.retrofit.JwtWrapper
 import com.example.transaction.retrofit.loadJwt
 import com.example.transaction.retrofit.saveJwt
 import java.time.Instant
 
-class VaultsFragment : Fragment(R.layout.fragment_vaults) {
-    private var _binding: FragmentVaultsBinding? = null
+public class HomeFragment : Fragment(R.layout.fragment_home) {
+
+    private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
 
-    private lateinit var loginApi: LoginApi
+    private lateinit var loginApi:
+            LoginApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentVaultsBinding.bind(view)
-
+        _binding = FragmentHomeBinding.bind(view)
     }
 
     override fun onDestroyView() {
@@ -77,4 +78,5 @@ class VaultsFragment : Fragment(R.layout.fragment_vaults) {
         }
     }
 }
+
 

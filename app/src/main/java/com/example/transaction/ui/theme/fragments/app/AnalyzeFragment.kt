@@ -9,7 +9,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.transaction.R
 import com.example.transaction.databinding.FragmentAnalyzeBinding
-import com.example.transaction.databinding.FragmentTransactionsBinding
 import com.example.transaction.retrofit.JwtWrapper
 import com.example.transaction.retrofit.loadJwt
 import com.example.transaction.retrofit.saveJwt

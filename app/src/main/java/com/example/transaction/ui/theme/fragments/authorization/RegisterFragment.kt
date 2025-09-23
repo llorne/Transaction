@@ -12,7 +12,6 @@ import com.example.transaction.R
 import com.example.transaction.databinding.FragmentRegisterBinding
 import com.example.transaction.retrofit.RegRequest
 import com.example.transaction.retrofit.RegistrationApi
-import com.example.transaction.retrofit.Token
 import com.example.transaction.retrofit.loadJwt
 import com.example.transaction.retrofit.saveJwt
 import com.example.transaction.retrofit.toJwtWrapper
@@ -24,7 +23,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.HTTP
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 

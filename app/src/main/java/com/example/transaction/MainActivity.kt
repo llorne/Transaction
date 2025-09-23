@@ -1,21 +1,16 @@
 package com.example.transaction
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.example.transaction.databinding.ActivityMainBinding
 import com.example.transaction.ui.LoginFragment
 import com.example.transaction.ui.theme.AnalyzeFragment
-import com.example.transaction.ui.theme.GoalsFragment
+import com.example.transaction.ui.theme.HomeFragment
 import com.example.transaction.ui.theme.ProfileFragment
 import com.example.transaction.ui.theme.TransactionsFragment
 import com.example.transaction.ui.theme.VaultsFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentActionListener {
@@ -34,9 +29,9 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentActionListener
     private fun setUpNav(){
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.home -> replaceFragment(HomeFragment())
                 R.id.vaults -> replaceFragment(VaultsFragment())
                 R.id.transactions -> replaceFragment(TransactionsFragment())
-                R.id.goals -> replaceFragment(GoalsFragment())
                 R.id.analyze -> replaceFragment(AnalyzeFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 else -> {}

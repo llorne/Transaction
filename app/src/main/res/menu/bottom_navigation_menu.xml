@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:id="@+id/vaults"
+        android:id="@+id/home"
         android:enabled="true"
-        android:icon="@drawable/bank"
         android:iconTint="@color/blue_800"
+        android:icon="@drawable/goal"
         tools:ignore="MenuTitle" />
     <item
         android:id="@+id/transactions"
@@ -14,10 +14,10 @@
         android:iconTint="@color/blue_800"
         tools:ignore="MenuTitle" />
     <item
-        android:id="@+id/goals"
+        android:id="@+id/vaults"
         android:enabled="true"
+        android:icon="@drawable/bank"
         android:iconTint="@color/blue_800"
-        android:icon="@drawable/goal"
         tools:ignore="MenuTitle" />
     <item
         android:id="@+id/analyze"

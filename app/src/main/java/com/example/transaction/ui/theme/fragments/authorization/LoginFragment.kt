@@ -4,21 +4,18 @@ import LoginApi
 import LoginRequest
 import RefreshRequest
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.transaction.R
 import com.example.transaction.databinding.FragmentLoginBinding
 import com.example.transaction.retrofit.*
-import com.example.transaction.ui.theme.VaultsFragment
+import com.example.transaction.ui.theme.HomeFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -89,12 +86,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         //  2) Нажатие кнопки Login(Войти)
+
+
+
+        //  2) Нажатие кнопки Login(Войти)
         binding.loginButton.setOnClickListener {
             // Для дорогого Султана Тимура - это чтобы не авторизовываться ибо я не умею)
             //startActivity(Intent(requireContext(), HomeActivity::class.java))
             updateParentAttribute()
             val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
-            ft.replace(R.id.nav_host_fragment, VaultsFragment(), "No")
+            ft.replace(R.id.nav_host_fragment, HomeFragment(), "No")
             ft.commit()
 
             viewLifecycleOwner.lifecycleScope.launch {
@@ -113,7 +114,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             LoginRequest(username = username, password = password)
                         )
 
-                        // Сохраняем JWT-обёртку (сформируем её из responseToken)
                         val jwtWrapper = JwtWrapper(
                             jwtToken = JwtWrapper.JwtToken(
                                 accessToken = responseToken.accessToken,
@@ -122,7 +122,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         )
                         saveJwt(ctx, jwtWrapper)
 
-                        // Логируем то, что пришло (коротко)
                         Log.i("LoginResponse", "accessToken = ${responseToken.accessToken.accessToken}")
                         Log.i("LoginResponse", "accessExpires = ${responseToken.accessToken.expiresAt}")
                         Log.i("LoginResponse", "refreshToken = ${responseToken.refreshToken.refreshToken}")
@@ -132,7 +131,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             Toast.makeText(ctx, "Успешный вход 🎉", Toast.LENGTH_SHORT).show()
                             updateParentAttribute()
                             val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
-                            ft.replace(R.id.nav_host_fragment, VaultsFragment(), "No")
+                            ft.replace(R.id.nav_host_fragment, HomeFragment(), "No")
                             ft.commit()
                         }
                     } catch (e: retrofit2.HttpException) {
@@ -154,7 +153,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         }
 
-        // 3) Переход на регистрацию ---
+
+
+        // 3) Переход на регистрацию
         binding.toRegisterText.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }

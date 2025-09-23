@@ -1,4 +1,4 @@
-package com.example.transaction.ui.theme;
+package com.example.transaction.ui.theme
 
 import LoginApi
 import RefreshRequest
@@ -7,25 +7,38 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.transaction.R
-import com.example.transaction.databinding.FragmentGoalsBinding
+import com.example.transaction.databinding.FragmentVaultsBinding
 import com.example.transaction.retrofit.JwtWrapper
 import com.example.transaction.retrofit.loadJwt
 import com.example.transaction.retrofit.saveJwt
 import java.time.Instant
 
-public class GoalsFragment : Fragment(R.layout.fragment_goals) {
-
-    private var _binding: FragmentGoalsBinding? = null
+class VaultsFragment : Fragment(R.layout.fragment_vaults) {
+    private var _binding: FragmentVaultsBinding? = null
 
     private val binding get() = _binding!!
+    private lateinit var adapter: VaultsAdapter
+    private val dataSet = mutableListOf<String>()
 
-    private lateinit var loginApi:
-            LoginApi
+    private lateinit var loginApi: LoginApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentGoalsBinding.bind(view)
+        _binding = FragmentVaultsBinding.bind(view)
+        binding.addNewVault.setOnClickListener {
+            // Тут добавление нового счёта
+            dataSet.add("add")
+            binding.recyclerView.adapter?.notifyItemInserted(dataSet.size - 1)
+        }
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = VaultsAdapter(dataSet)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
     }
 
     override fun onDestroyView() {
@@ -78,5 +91,4 @@ public class GoalsFragment : Fragment(R.layout.fragment_goals) {
         }
     }
 }
-
 
