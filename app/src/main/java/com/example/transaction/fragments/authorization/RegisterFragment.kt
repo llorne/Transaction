@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -81,7 +82,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     }
 
-                } catch (e: retrofit2.HttpException) {
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         when (e.code()) {
                             409 -> Toast.makeText(requireContext(), "Пользователь уже существует", Toast.LENGTH_LONG).show()

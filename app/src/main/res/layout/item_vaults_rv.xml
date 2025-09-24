@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -7,30 +8,50 @@
     android:padding="10sp">
 
     <TextView
+        android:id="@+id/vault_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:layout_weight="1"
+        android:text="Имя счёта"
+        android:textSize="20sp" />
+
+    <TextView
         android:id="@+id/vault_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_margin="5sp"
-        android:textSize="24sp"
-        android:text="Тип счёта" />
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Тип счёта"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/vault_balance"
         android:layout_width="wrap_content"
-        android:layout_weight="2"
         android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_marginLeft="5sp"
+        android:layout_weight="2"
+        android:gravity="end"
+        android:text="баланс"
         android:textColor="@color/blue_800"
-        android:text="баланс" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    <ImageButton
-        android:id="@+id/delete_vault"
+    <ImageView
+        android:id="@+id/vault_currency"
+        android:layout_width="20sp"
+        android:layout_marginStart="5sp"
+        android:layout_height="20sp"
+        android:background="@color/white_200"
+        android:src="@drawable/ruble"
+        app:tint="@color/blue_800" />
+
+    <ImageView
+        android:id="@+id/vault_status"
         android:layout_width="20sp"
         android:layout_height="20sp"
         android:layout_margin="5sp"
         android:background="@color/white_200"
-        android:src="@drawable/delete_icon" />
+        android:src="@drawable/checkmark" />
 </LinearLayout>
