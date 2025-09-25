@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Instant
@@ -138,7 +139,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             ft.replace(R.id.nav_host_fragment, HomeFragment(), "No")
                             ft.commit()
                         }
-                    } catch (e: retrofit2.HttpException) {
+                    } catch (e: HttpException) {
                         withContext(Dispatchers.Main) {
                             when (e.code()) {
                                 401 -> Toast.makeText(ctx, "Неверные учетные данные", Toast.LENGTH_LONG).show()

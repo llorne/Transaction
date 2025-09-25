@@ -3,40 +3,108 @@ package com.example.transaction.ui.theme
 import LoginApi
 import RefreshRequest
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.transaction.R
+import com.example.transaction.VaultsAdapter
 import com.example.transaction.databinding.FragmentVaultsBinding
+import com.example.transaction.models.Vault
 import com.example.transaction.retrofit.JwtWrapper
 import com.example.transaction.retrofit.loadJwt
 import com.example.transaction.retrofit.saveJwt
 import java.time.Instant
 
-class VaultsFragment : Fragment(R.layout.fragment_vaults) {
+class VaultsFragment : Fragment(R.layout.fragment_vaults), VaultsAdapter.OnVaultItemClickListener {
     private var _binding: FragmentVaultsBinding? = null
 
     private val binding get() = _binding!!
+    private var currentlySelectedPosition = -1
     private lateinit var adapter: VaultsAdapter
-    private val dataSet = mutableListOf<String>()
+    private val dataSet = mutableListOf<Vault>()
 
     private lateinit var loginApi: LoginApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentVaultsBinding.bind(view)
+        // Тестовые счета
+        var vault = Vault("Счёт 1", "Наличные", 130.0, R.drawable.dollar, true)
+        var vault2 = Vault("Счёт 2", "Безнал", 10.0, R.drawable.euro, false)
+        dataSet.add(vault)
+        dataSet.add(vault2)
         binding.addNewVault.setOnClickListener {
+            hideVaultInfo()
+            currentlySelectedPosition = -1
             // Тут добавление нового счёта
-            dataSet.add("add")
+            var vault = Vault("Счёт 1", "Наличные", 130.0, R.drawable.dollar, true)
+            dataSet.add(vault)
+            onSumChange()
             binding.recyclerView.adapter?.notifyItemInserted(dataSet.size - 1)
         }
+
+        onSumChange()
         setupRecyclerView()
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() {
+        binding.root.setOnClickListener {
+            hideVaultInfo()
+            currentlySelectedPosition = -1
+        }
+        binding.vaultOnclickInfo.setOnClickListener {
+        }
+    }
+
+    private fun hideVaultInfo() {
+        binding.vaultMainLayout.foreground = null
+        binding.vaultOnclickInfo.visibility = View.GONE
+    }
+
+    private fun onSumChange() {
+        binding.vaultRubblesSum.text =
+            (dataSet.filter { vault -> vault.currency == R.drawable.ruble }
+                .sumOf { vault -> vault.balance }).toString()
+        binding.vaultDollarsSum.text =
+            (dataSet.filter { vault -> vault.currency == R.drawable.dollar }
+                .sumOf { vault -> vault.balance }).toString()
+        binding.vaultEurosSum.text =
+            (dataSet.filter { vault -> vault.currency == R.drawable.euro }
+                .sumOf { vault -> vault.balance }).toString()
+    }
+
+    override fun onVaultItemClick(position: Int) {
+        if (currentlySelectedPosition == -1) {
+            setupViews(dataSet[position])
+            binding.vaultOnclickInfo.visibility = View.VISIBLE
+            binding.vaultMainLayout.foreground = resources.getDrawable(R.color.gray)
+            currentlySelectedPosition = position
+        } else {
+            hideVaultInfo()
+            currentlySelectedPosition = -1
+        }
+    }
+
+    private fun setupViews(vault: Vault) {
+        val status = if (vault.status) R.drawable.checkmark else R.drawable.cross
+        binding.vaultNameDialog.text = "Имя счёта: ${vault.name}"
+        binding.vaultTypeDialog.text = "Тип счёта: ${vault.type}"
+        binding.vaultBalanceDialog.text = "Баланс: ${vault.balance}"
+        binding.vaultStatusDialog.text = if (vault.status) "Счёт открыт" else "Счёт закрыт"
+        binding.vaultCurrencyDialog.setImageIcon(Icon.createWithResource(context, vault.currency))
+        binding.vaultStatusImgDialog.setImageIcon(Icon.createWithResource(context, status))
     }
 
     private fun setupRecyclerView() {
-        adapter = VaultsAdapter(dataSet)
+        adapter = VaultsAdapter(dataSet, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
