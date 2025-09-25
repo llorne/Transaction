@@ -79,6 +79,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 // accessToken действителен либо был успешно обновлён
                 Toast.makeText(ctx, "Успешный вход (токен валиден)", Toast.LENGTH_SHORT).show()
                 Log.i("AuthCheck", "Token valid — вход выполнен автоматически")
+                updateParentAttribute()
+                val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
+                ft.replace(R.id.nav_host_fragment, HomeFragment(), "No")
+                ft.commit()
                 return@launch
             } else {
                 Log.i("AuthCheck", "Нет валидных токенов — показываем форму логина")

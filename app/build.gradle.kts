@@ -47,7 +47,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
     implementation("com.squareup.okhttp3:okhttp:4.7.2")
-
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

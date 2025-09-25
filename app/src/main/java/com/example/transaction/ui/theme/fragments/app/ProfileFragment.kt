@@ -1,82 +1,84 @@
-package com.example.transaction.ui.theme;
+package com.example.transaction.ui.theme
 
-import LoginApi
-import RefreshRequest
-import android.content.Context
+import ProfileApi
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.transaction.R
 import com.example.transaction.databinding.FragmentProfileBinding
 import com.example.transaction.retrofit.JwtWrapper
 import com.example.transaction.retrofit.loadJwt
-import com.example.transaction.retrofit.saveJwt
-import java.time.Instant
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-public class ProfileFragment : Fragment(R.layout.fragment_profile) {
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private var _binding: FragmentProfileBinding? = null
-
     private val binding get() = _binding!!
-
-    private lateinit var loginApi:
-            LoginApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentProfileBinding.bind(view)
+
+        // Spinner
+        val genderAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            listOf("Мужской", "Женский")
+        )
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinner.adapter = genderAdapter
+
+
+        val jwtWrapper: JwtWrapper? = loadJwt(requireContext())
+        val token = jwtWrapper?.jwtToken?.accessToken?.accessToken
+
+
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .addInterceptor { chain ->
+                val requestBuilder = chain.request().newBuilder()
+                token?.let {
+                    requestBuilder.addHeader("Authorization", "Bearer $it")
+                }
+                chain.proceed(requestBuilder.build())
+            }
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8080/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val profileApi = retrofit.create(ProfileApi::class.java)
+
+        // Запрос профиля
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val profile = profileApi.getProfile()
+                binding.username.setText(profile.username)
+                binding.firstName.setText(profile.firstname)
+                binding.lastName.setText(profile.lastname)
+            } catch (e: Exception) {
+                Log.e("ProfileFragment", "Ошибка получения профиля", e)
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    /**
-     * Проверяет токены:
-     * - если accessToken ещё жив — возвращает true
-     * - если accessToken просрочен и refreshToken корректен — пытается обновить через API и сохранить новые токены, возвращает true (если успешно)
-     * - иначе возвращает false
-     *
-     * Важно: поле expiresAt в accessToken/refreshToken должно быть String в формате ISO-8601,
-     * чтобы Instant.parse(...) работал.
-     */
-    private suspend fun checkTokens(context: Context): Boolean {
-        val stored = loadJwt(context) ?: return false
-
-        return try {
-            val accessExpires = Instant.parse(stored.jwtToken.accessToken.expiresAt)
-            val now = Instant.now()
-
-            if (now.isBefore(accessExpires)) {
-                Log.i("AuthCheck", "accessToken ещё действителен (until $accessExpires)")
-                true
-            } else {
-                Log.i("AuthCheck", "accessToken просрочен — пробуем refresh")
-                try {
-                    val refreshValue = stored.jwtToken.refreshToken.refreshToken
-                    val newToken = loginApi.refresh(RefreshRequest(refreshToken = refreshValue))
-
-                    val newWrapper = JwtWrapper(
-                        jwtToken = JwtWrapper.JwtToken(
-                            accessToken = newToken.accessToken,
-                            refreshToken = newToken.refreshToken
-                        )
-                    )
-                    saveJwt(context, newWrapper)
-                    Log.i("AuthCheck", "refresh успешен — новые токены сохранены")
-                    true
-                } catch (e: Exception) {
-                    Log.w("AuthCheck", "refresh failed", e)
-                    false
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("AuthCheck", "Ошибка при разборе expiresAt или другом", e)
-            false
-        }
-    }
 }
-
-
