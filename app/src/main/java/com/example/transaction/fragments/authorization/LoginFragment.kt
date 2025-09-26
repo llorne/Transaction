@@ -98,7 +98,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.loginButton.setOnClickListener {
             // Для дорогого Султана Тимура - это чтобы не авторизовываться ибо я не умею)
             //startActivity(Intent(requireContext(), HomeActivity::class.java))
-            updateParentAttribute()
+//            updateParentAttribute()
 //            val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
 //            ft.replace(R.id.nav_host_fragment, HomeFragment(), "No")
 //            ft.commit()

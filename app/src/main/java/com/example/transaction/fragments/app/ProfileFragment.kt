@@ -95,12 +95,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 .setPositiveButton("Да") { _, _ ->
                     clearJwt(requireContext())
 
-                    val bottomNav = requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView?>(R.id.bottom_navigation)
+                    val bottomNav = requireActivity().findViewById<com.google.android.material.bottomnavigation.
+                    BottomNavigationView?>(R.id.bottom_navigation)
                     bottomNav?.visibility = View.GONE
 
                     val navController = (requireActivity()
                         .supportFragmentManager
-                        .findFragmentById(R.id.nav_host_fragment) as? androidx.navigation.fragment.NavHostFragment)
+                        .findFragmentById(R.id.nav_host_fragment) as? androidx.navigation.
+                        fragment.NavHostFragment)
                         ?.navController
 
                     if (navController != null) {
