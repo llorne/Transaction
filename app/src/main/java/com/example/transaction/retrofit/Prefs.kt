@@ -14,3 +14,10 @@ fun loadJwt(context: Context): JwtWrapper? {
     val json = prefs.getString("jwt_token", null) ?: return null
     return Gson().fromJson(json, JwtWrapper::class.java)
 }
+
+fun clearJwt(context: Context) {
+    val prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+    prefs.edit().clear().apply()
+}
+
+
