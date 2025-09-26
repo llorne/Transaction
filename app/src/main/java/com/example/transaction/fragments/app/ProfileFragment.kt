@@ -83,10 +83,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 Log.e("ProfileFragment", "Ошибка получения профиля", e)
             }
         }
-        val navController = requireActivity()
-            .supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment)
-            ?.findNavController()
+
 
         binding.imageView.setOnClickListener {
             AlertDialog.Builder(requireContext())
@@ -97,7 +94,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                     val bottomNav = requireActivity().findViewById<com.google.android.material.bottomnavigation.
                     BottomNavigationView?>(R.id.bottom_navigation)
-                    bottomNav?.visibility = View.GONE
+                    bottomNav?.visibility = View.GONE //скрываем нижнюю панель
 
                     val navController = (requireActivity()
                         .supportFragmentManager
@@ -118,6 +115,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
                         requireActivity().finish()
                         startActivity(intent)
+                        Log.i("Profile fragment", "Выполнился жесткий сброс")
                     }
                 }
                 .setNegativeButton("Отмена", null)
