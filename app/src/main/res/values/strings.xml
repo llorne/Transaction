@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Transaction</string>
-    <string-array name="vaults_select">
-        <item>Счёт 1</item>
-        <item>Счёт 2</item>
+    <string-array name="vault_type_select">
+        <item>Наличные</item>
+        <item>Кредитка</item>
+        <item>Дебетовая</item>
     </string-array>
 </resources>

@@ -34,11 +34,7 @@ class VaultsAdapter(
             vaultStatus.setImageIcon(Icon.createWithResource(context, status))
         }
         holder.itemView.setOnClickListener {
-            //VaultInfoDialog(context, vault).show()
             listener.onVaultItemClick(position)
-
-            // Тут отображение транзакций при клике на счёт
-            Toast.makeText(context, "Транзакций пока нет", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -3,14 +3,10 @@ package com.example.transaction.ui.theme
 import LoginApi
 import RefreshRequest
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.transaction.R
@@ -37,7 +33,7 @@ class VaultsFragment : Fragment(R.layout.fragment_vaults), VaultsAdapter.OnVault
         _binding = FragmentVaultsBinding.bind(view)
         // Тестовые счета
         var vault = Vault("Счёт 1", "Наличные", 130.0, R.drawable.dollar, true)
-        var vault2 = Vault("Счёт 2", "Безнал", 10.0, R.drawable.euro, false)
+        var vault2 = Vault("Счёт 2", "Дебетовая", 10.0, R.drawable.euro, false)
         dataSet.add(vault)
         dataSet.add(vault2)
         binding.addNewVault.setOnClickListener {
@@ -87,17 +83,110 @@ class VaultsFragment : Fragment(R.layout.fragment_vaults), VaultsAdapter.OnVault
             binding.vaultOnclickInfo.visibility = View.VISIBLE
             binding.vaultMainLayout.foreground = resources.getDrawable(R.color.gray)
             currentlySelectedPosition = position
+            when (dataSet[position].currency) {
+                R.drawable.ruble -> binding.vaultCurrencyDialog.contentDescription = "ruble"
+                R.drawable.dollar -> binding.vaultCurrencyDialog.contentDescription = "dollar"
+                R.drawable.euro -> binding.vaultCurrencyDialog.contentDescription = "euro"
+            }
+            binding.vaultCurrencyDialog.setOnClickListener {
+                when (binding.vaultCurrencyDialog.contentDescription) {
+                    "ruble" -> {
+                        binding.vaultCurrencyDialog.contentDescription = "dollar"
+                        binding.vaultCurrencyDialog.setImageIcon(
+                            Icon.createWithResource(
+                                context,
+                                R.drawable.dollar
+                            )
+                        )
+                    }
+
+                    "dollar" -> {
+                        binding.vaultCurrencyDialog.contentDescription = "euro"
+                        binding.vaultCurrencyDialog.setImageIcon(
+                            Icon.createWithResource(
+                                context,
+                                R.drawable.euro
+                            )
+                        )
+                    }
+
+                    "euro" -> {
+                        binding.vaultCurrencyDialog.contentDescription = "ruble"
+                        binding.vaultCurrencyDialog.setImageIcon(
+                            Icon.createWithResource(
+                                context,
+                                R.drawable.ruble
+                            )
+                        )
+                    }
+                }
+            }
+            binding.vaultStatusImgDialog.contentDescription = if (dataSet[position].status) "checkmark" else "cross"
+            binding.vaultStatusImgDialog.setOnClickListener {
+                when (binding.vaultStatusImgDialog.contentDescription) {
+                    "checkmark" -> {
+                        binding.vaultStatusImgDialog.contentDescription = "cross"
+                        binding.vaultStatusDialog.text = "Счёт закрыт"
+                        binding.vaultStatusImgDialog.setImageIcon(Icon.createWithResource(context, R.drawable.cross))
+                    }
+
+                    "cross" -> {
+                        binding.vaultStatusImgDialog.contentDescription = "checkmark"
+                        binding.vaultStatusDialog.text = "Счёт открыт"
+                        binding.vaultStatusImgDialog.setImageIcon(Icon.createWithResource(context, R.drawable.checkmark))
+                    }
+                }
+            }
+            binding.vaultSaveButtonDialog.setOnClickListener {
+                changeItem(position)
+            }
         } else {
             hideVaultInfo()
             currentlySelectedPosition = -1
         }
     }
 
+    private fun changeItem(position: Int) {
+        val name = if (!binding.vaultNameDialog.text.toString()
+                .isEmpty()
+        ) binding.vaultNameDialog.text.toString() else "Без имени"
+        val type = if (!binding.vaultTypeDialog.selectedItem.toString()
+                .isEmpty()
+        ) binding.vaultTypeDialog.selectedItem.toString() else "Без типа"
+        val balance = if (!binding.vaultBalanceDialog.text.toString()
+                .isEmpty()
+        ) binding.vaultBalanceDialog.text.toString().toDouble() else 0.0
+        var currency = 0
+        when (binding.vaultCurrencyDialog.contentDescription) {
+            "ruble" -> currency = R.drawable.ruble
+            "dollar" -> currency = R.drawable.dollar
+            "euro" -> currency = R.drawable.euro
+        }
+        var status = false
+        when (binding.vaultStatusImgDialog.contentDescription) {
+            "checkmark" -> status = true
+            "cross" -> status = false
+        }
+        val vault = Vault(name, type, balance, currency, status)
+        dataSet[position] = vault
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+        onSumChange()
+        hideVaultInfo()
+    }
+
     private fun setupViews(vault: Vault) {
         val status = if (vault.status) R.drawable.checkmark else R.drawable.cross
-        binding.vaultNameDialog.text = "Имя счёта: ${vault.name}"
-        binding.vaultTypeDialog.text = "Тип счёта: ${vault.type}"
-        binding.vaultBalanceDialog.text = "Баланс: ${vault.balance}"
+        binding.vaultNameDialog.hint = "Имя счёта: ${vault.name}"
+        var type = 0
+        when (vault.type){
+            "Наличные" -> type = 0
+            "Кредитка" -> type = 1
+            "Дебетовая" -> type = 2
+        }
+        Log.i("type", type.toString())
+        Log.i("type", vault.type)
+        binding.vaultTypeDialog.setSelection(type)
+        binding.vaultBalanceDialog.hint = "Баланс: ${vault.balance}"
         binding.vaultStatusDialog.text = if (vault.status) "Счёт открыт" else "Счёт закрыт"
         binding.vaultCurrencyDialog.setImageIcon(Icon.createWithResource(context, vault.currency))
         binding.vaultStatusImgDialog.setImageIcon(Icon.createWithResource(context, status))
